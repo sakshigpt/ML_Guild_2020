@@ -9,4 +9,4 @@ def print_result(pred_train, y_train, pred_test, y_test):
     r2_test = r2_score(y_test, pred_test)
     print('Train RMSE: {}\nTrain R2: {}\nTest RMSE: {}\nTest R2: {}'.
          format(rmse_train,r2_train,rmse_test,r2_test))
-    returnv
+    return
