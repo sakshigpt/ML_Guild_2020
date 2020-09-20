@@ -1,8 +1,13 @@
-import pandas as pd, sys, pickle
+import pandas as pd, sys, pickle, getpass
 from category_encoders.target_encoder import TargetEncoder
-category_encoders.one_hot import OneHotEncoder
+from category_encoders.one_hot import OneHotEncoder
 
-sys.path.insert(0, '/Users/sakshigupta43/Desktop/Guild Competition/ML_Guild_2020')
+username = getpass.getuser()
+if(username == 'sakshigupta43'):
+    sys.path.insert(0, '/Users/sakshigupta43/Desktop/Guild_Competition/ML_Guild_2020')
+else:
+        sys.path.insert(0, '/Users/skoranne/Desktop/Guild_Competition/ML_Guild_2020')
+
 from CONFIG import *
 
 '''Encoder I/O'''
@@ -37,7 +42,84 @@ def target_encoding_transform(df, cols):
     return df
 
 '''OHE Encoding'''
+def ohe_encoding_fit(X,y,cols):
+    '''OHE - Takes X_train, y_train, columns to be encoded, saves encoded files '''
+    for col in cols:
+        print("Encoding for column: {}".format(col))
+        encoder = TargetEncoder(cols = [col])
+        encoder.fit(X[col], y)
+        write_encoder(encoder, 'ohe', col)
+    return
 
+def ohe_encoding_transform(df, cols):
+    for col in cols:
+        print("Encoding for column: {}".format(col))
+        try:
+            encoder = read_encoder('ohe', col)
+        except:
+            print('Error occurred when reading column {}'.format(col))
+        df[col] = encoder.transform(df[col])
+    return df
+
+'''Label Encoding'''
+def label_encoding_fit(X,y,cols):
+    '''Label - Takes X_train, y_train, columns to be encoded, saves encoded files '''
+    for col in cols:
+        print("Encoding for column: {}".format(col))
+        encoder = TargetEncoder(cols = [col])
+        encoder.fit(X[col], y)
+        write_encoder(encoder, 'label', col)
+    return
+
+def label_encoding_transform(df, cols):
+    for col in cols:
+        print("Encoding for column: {}".format(col))
+        try:
+            encoder = read_encoder('label', col)
+        except:
+            print('Error occurred when reading column {}'.format(col))
+        df[col] = encoder.transform(df[col])
+    return df
+
+'''CatBoost Encoding'''
+def catboost_encoding_fit(X,y,cols):
+    '''CatBoost - Takes X_train, y_train, columns to be encoded, saves encoded files '''
+    for col in cols:
+        print("Encoding for column: {}".format(col))
+        encoder = CatBoostEncoder(cols = [col])
+        encoder.fit(X[col], y)
+        write_encoder(encoder, 'catboost', col)
+    return
+
+def catboost_encoding_transform(df, cols):
+    for col in cols:
+        print("Encoding for column: {}".format(col))
+        try:
+            encoder = read_encoder('catboost', col)
+        except:
+            print('Error occurred when reading column {}'.format(col))
+        df[col] = encoder.transform(df[col])
+    return df
+
+'''James-Stein Encoding'''
+def james_stein_encoding_fit(X,y,cols):
+    '''James-Stein - Takes X_train, y_train, columns to be encoded, saves encoded files '''
+    for col in cols:
+        print("Encoding for column: {}".format(col))
+        encoder = JamesSteinEncoder(cols = [col])
+        encoder.fit(X[col], y)
+        write_encoder(encoder, 'james_stein', col)
+    return
+
+def james_stein_encoding_transform(df, cols):
+    for col in cols:
+        print("Encoding for column: {}".format(col))
+        try:
+            encoder = read_encoder('james_stein', col)
+        except:
+            print('Error occurred when reading column {}'.format(col))
+        df[col] = encoder.transform(df[col])
+    return df
 
 
 
